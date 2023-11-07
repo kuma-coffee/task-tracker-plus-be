@@ -73,7 +73,7 @@ func (t *taskRepository) GetList() ([]model.Task, error) {
 
 func (t *taskRepository) GetTaskCategory(id int) ([]model.TaskCategory, error) {
 	result := []model.TaskCategory{}
-	err := t.db.Table("tasks").Select("tasks.id, tasks.title, categories.name as category").Joins("left join categories on tasks.category_id = categories.id").Where("tasks.id = ?", id).Scan(&result).Error
+	err := t.db.Table("tasks").Select("tasks.id, tasks.title, categories.name as category").Joins("left join categories on tasks.category_id = categories.id").Where("categories.id = ?", id).Scan(&result).Error
 	if err != nil {
 		return []model.TaskCategory{}, err
 	}
