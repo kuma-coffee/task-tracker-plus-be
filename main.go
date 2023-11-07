@@ -12,6 +12,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	"gorm.io/gorm"
@@ -68,6 +69,14 @@ func main() {
 
 		conn.AutoMigrate(&model.User{}, &model.Session{}, &model.Category{}, &model.Task{})
 
+		config := cors.DefaultConfig()
+		config.AllowOrigins = []string{"http://localhost:5173"}
+		config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization", "Cookie"}
+		config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
+		config.AllowCredentials = true
+
+		router.Use(cors.New(config))
+
 		router = RunServer(conn, router)
 
 		fmt.Println("Server is running on port 8080")
@@ -107,7 +116,6 @@ func RunServer(db *gorm.DB, gin *gin.Engine) *gin.Engine {
 		{
 			user.POST("/login", apiHandler.UserAPIHandler.Login)
 			user.POST("/register", apiHandler.UserAPIHandler.Register)
-
 			user.Use(middleware.Auth())
 			user.GET("/tasks", apiHandler.UserAPIHandler.GetUserTaskCategory)
 		}

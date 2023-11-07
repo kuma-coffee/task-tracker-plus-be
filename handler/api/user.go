@@ -76,7 +76,11 @@ func (u *userAPI) Login(c *gin.Context) {
 
 	c.SetCookie("session_token", *record, 3600, "/", "localhost", false, true)
 
-	c.JSON(http.StatusOK, model.NewSuccessResponse("login success"))
+	response := map[string]interface{}{
+		"token": *record,
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func (u *userAPI) GetUserTaskCategory(c *gin.Context) {
