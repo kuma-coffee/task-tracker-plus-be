@@ -11,6 +11,7 @@ import (
 type UserAPI interface {
 	Register(c *gin.Context)
 	Login(c *gin.Context)
+	Logout(c *gin.Context)
 	GetUserTaskCategory(c *gin.Context)
 }
 
@@ -81,6 +82,10 @@ func (u *userAPI) Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, response)
+}
+
+func (a *userAPI) Logout(c *gin.Context) {
+	c.SetCookie("session_token", "", -1, "/", "", false, false)
 }
 
 func (u *userAPI) GetUserTaskCategory(c *gin.Context) {
