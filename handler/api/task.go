@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/mitchellh/mapstructure"
 )
 
 type TaskAPI interface {
@@ -28,19 +27,13 @@ func NewTaskAPI(taskRepo service.TaskService) *taskAPI {
 }
 
 func (t *taskAPI) AddTask(c *gin.Context) {
-	var taskDTO model.TaskDTO
-	if err := c.ShouldBindJSON(&taskDTO); err != nil {
+	var newTask model.Task
+	if err := c.ShouldBindJSON(&newTask); err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{Error: err.Error()})
 		return
 	}
 
-	var newTask model.Task
-	err := mapstructure.Decode(taskDTO, &newTask)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Error: err.Error()})
-	}
-
-	err = t.taskService.Store(&newTask)
+	err := t.taskService.Store(&newTask)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Error: err.Error()})
 		return

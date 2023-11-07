@@ -37,15 +37,6 @@ type Task struct {
 	UserID     int    `json:"user_id"`
 }
 
-type TaskDTO struct {
-	Title      string `json:"title"`
-	Deadline   string `json:"deadline"`
-	Priority   int    `json:"priority"`
-	Status     string `json:"status"`
-	CategoryID int    `json:"category_id"`
-	UserID     int    `json:"user_id"`
-}
-
 type Session struct {
 	ID     int       `gorm:"primaryKey" json:"id"`
 	Token  string    `json:"token"`

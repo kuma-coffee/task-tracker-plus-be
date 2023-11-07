@@ -3,6 +3,7 @@ module a21hc3NpZ25tZW50
 go 1.18
 
 require (
+	github.com/gin-contrib/cors v1.4.0
 	github.com/lib/pq v1.10.7
 	github.com/onsi/ginkgo/v2 v2.1.4
 	github.com/onsi/gomega v1.19.0
@@ -11,7 +12,6 @@ require (
 )
 
 require (
-	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/bytedance/sonic v1.8.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -34,7 +34,6 @@ require (
 )
 
 require (
-	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/gin-gonic/gin v1.9.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
