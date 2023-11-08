@@ -116,6 +116,7 @@ func RunServer(db *gorm.DB, gin *gin.Engine) *gin.Engine {
 		{
 			user.POST("/login", apiHandler.UserAPIHandler.Login)
 			user.POST("/register", apiHandler.UserAPIHandler.Register)
+
 			user.Use(middleware.Auth())
 			user.GET("/tasks", apiHandler.UserAPIHandler.GetUserTaskCategory)
 			user.GET("/logout", apiHandler.UserAPIHandler.Logout)

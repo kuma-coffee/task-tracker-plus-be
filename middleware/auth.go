@@ -30,7 +30,7 @@ func Auth() gin.HandlerFunc {
 		token, err := jwt.ParseWithClaims(c, claims, func(t *jwt.Token) (interface{}, error) {
 			return model.JwtKey, nil
 		})
-		ctx.Set("email", claims.Email)
+		// ctx.Set("email", claims.Email)
 
 		if err != nil {
 			if err == jwt.ErrSignatureInvalid {
