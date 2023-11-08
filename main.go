@@ -72,7 +72,7 @@ func main() {
 		conn.AutoMigrate(&model.User{}, &model.Session{}, &model.Category{}, &model.Task{})
 
 		config := cors.DefaultConfig()
-		config.AllowOrigins = []string{"*"}
+		config.AllowOrigins = []string{"https://main--task-tracker-plus-web.netlify.app/"}
 		config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization", "Cookie"}
 		config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
 		config.AllowCredentials = true
