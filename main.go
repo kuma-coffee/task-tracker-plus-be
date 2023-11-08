@@ -8,6 +8,7 @@ import (
 	repo "a21hc3NpZ25tZW50/repository"
 	"a21hc3NpZ25tZW50/service"
 	"fmt"
+	"log"
 	"os"
 	"sync"
 	"time"
@@ -81,11 +82,13 @@ func main() {
 		router = RunServer(conn, router)
 
 		fmt.Println("Server is running on port 8080")
-		err = router.Run(":8080")
-		if err != nil {
-			panic(err)
+		port := os.Getenv("PORT")
+		if port == "" {
+			port = "8080"
 		}
-
+		if err := router.Run(":" + port); err != nil {
+			log.Panicf("error: %s", err)
+		}
 	}()
 
 	wg.Wait()
