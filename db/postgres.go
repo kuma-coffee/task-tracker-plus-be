@@ -1,8 +1,7 @@
 package db
 
 import (
-	"a21hc3NpZ25tZW50/model"
-	"fmt"
+	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -10,31 +9,31 @@ import (
 
 type Postgres struct{}
 
-func (p *Postgres) Connect(creds *model.Credential) (*gorm.DB, error) {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Jakarta", creds.Host, creds.Username, creds.Password, creds.DatabaseName, creds.Port)
+// func (p *Postgres) Connect(creds *model.Credential) (*gorm.DB, error) {
+// 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Jakarta", creds.Host, creds.Username, creds.Password, creds.DatabaseName, creds.Port)
 
-	dbConn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		return nil, err
-	}
-
-	return dbConn, nil
-}
-
-// os.Setenv("DATABASE_URL", "postgres://<username>:<password>@localhost:5432/<database>") // <- Gunakan ini untuk connect database di localhost
-
-// func (p *Postgres) Connect() (*gorm.DB, error) {
-// 	dbConn, err := gorm.Open(postgres.New(postgres.Config{
-// 		DriverName: "pgx",
-// 		DSN:        os.Getenv("DATABASE_URL"),
-// 	}), &gorm.Config{})
-
+// 	dbConn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 // 	if err != nil {
 // 		return nil, err
 // 	}
 
 // 	return dbConn, nil
 // }
+
+// os.Setenv("DATABASE_URL", "postgres://<username>:<password>@localhost:5432/<database>") // <- Gunakan ini untuk connect database di localhost
+
+func (p *Postgres) Connect() (*gorm.DB, error) {
+	dbConn, err := gorm.Open(postgres.New(postgres.Config{
+		DriverName: "pgx",
+		DSN:        os.Getenv("DATABASE_URL"),
+	}), &gorm.Config{})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dbConn, nil
+}
 
 func NewDB() *Postgres {
 	return &Postgres{}

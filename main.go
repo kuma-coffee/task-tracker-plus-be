@@ -45,32 +45,33 @@ func main() {
 		}))
 		router.Use(gin.Recovery())
 
-		dbCredential := model.Credential{
-			Host:         "localhost",
-			Username:     "postgres",
-			Password:     "postgres",
-			DatabaseName: "kampusmerdeka",
-			Port:         5432,
-			Schema:       "public",
-		}
+		// dbCredential := model.Credential{
+		// 	Host:         "localhost",
+		// 	Username:     "postgres",
+		// 	Password:     "postgres",
+		// 	DatabaseName: "kampusmerdeka",
+		// 	Port:         5432,
+		// 	Schema:       "public",
+		// }
 
-		conn, err := db.Connect(&dbCredential)
-		if err != nil {
-			panic(err)
-		}
-
-		// os.Setenv("DATABASE_URL", "postgres://postgres:hiwOus48NkMMSSE@localhost:15432/postgres") // <- Gunakan ini untuk connect database di localhost
-		os.Getenv("DATABASE_URL")
-
-		// conn, err := db.Connect()
+		// conn, err := db.Connect(&dbCredential)
 		// if err != nil {
 		// 	panic(err)
 		// }
 
+		// os.Setenv("DATABASE_URL", "postgres://postgres:hiwOus48NkMMSSE@localhost:15432/postgres") // <- Gunakan ini untuk connect database di localhost
+		os.Getenv("DATABASE_URL")
+		clientUrl := os.Getenv("CLIENT_URL")
+
+		conn, err := db.Connect()
+		if err != nil {
+			panic(err)
+		}
+
 		conn.AutoMigrate(&model.User{}, &model.Session{}, &model.Category{}, &model.Task{})
 
 		config := cors.DefaultConfig()
-		config.AllowOrigins = []string{"http://localhost:5173"}
+		config.AllowOrigins = []string{clientUrl}
 		config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization", "Cookie"}
 		config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
 		config.AllowCredentials = true
