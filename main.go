@@ -89,6 +89,7 @@ func main() {
 		if err := router.Run(":" + port); err != nil {
 			log.Panicf("error: %s", err)
 		}
+
 	}()
 
 	wg.Wait()
