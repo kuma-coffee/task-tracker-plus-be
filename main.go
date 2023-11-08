@@ -62,8 +62,7 @@ func main() {
 
 		// os.Setenv("DATABASE_URL", "postgres://postgres:hiwOus48NkMMSSE@localhost:15432/postgres") // <- Gunakan ini untuk connect database di localhost
 		os.Getenv("DATABASE_URL")
-		clientUrl := os.Getenv("CLIENT_URL")
-		fmt.Println(clientUrl)
+		// clientUrl := os.Getenv("CLIENT_URL")
 
 		conn, err := db.Connect()
 		if err != nil {
@@ -73,7 +72,7 @@ func main() {
 		conn.AutoMigrate(&model.User{}, &model.Session{}, &model.Category{}, &model.Task{})
 
 		config := cors.DefaultConfig()
-		config.AllowOrigins = []string{clientUrl}
+		config.AllowOrigins = []string{"*"}
 		config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization", "Cookie"}
 		config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
 		config.AllowCredentials = true
