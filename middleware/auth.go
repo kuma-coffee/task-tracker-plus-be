@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"a21hc3NpZ25tZW50/model"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -23,14 +22,12 @@ func Auth() gin.HandlerFunc {
 				}
 
 				authToken := ctx.Request.Header.Get("Authorization")
-				fmt.Println(authToken)
-				if t == "" {
+				if authToken == "" {
 					ctx.AbortWithStatusJSON(http.StatusUnauthorized, err)
 					return
 				}
 
 				authTokenArr := strings.Fields(authToken)
-				fmt.Println(authTokenArr)
 				if len(authTokenArr) != 2 || authTokenArr[0] != "Bearer" {
 					ctx.AbortWithStatus(http.StatusUnauthorized)
 					return
