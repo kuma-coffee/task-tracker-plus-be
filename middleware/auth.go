@@ -34,7 +34,6 @@ func Auth() gin.HandlerFunc {
 				}
 
 				t = authTokenArr[1]
-
 			} else {
 				ctx.AbortWithStatus(http.StatusBadRequest)
 				return
