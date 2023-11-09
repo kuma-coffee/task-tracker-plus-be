@@ -3,6 +3,7 @@ package middleware
 import (
 	"a21hc3NpZ25tZW50/model"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
@@ -10,24 +11,39 @@ import (
 
 func Auth() gin.HandlerFunc {
 	return gin.HandlerFunc(func(ctx *gin.Context) {
-		c, err := ctx.Cookie("session_token")
+		var t string
+
+		t, err := ctx.Cookie("session_token")
 		if err != nil {
 			if err == http.ErrNoCookie {
 				contentType := ctx.Request.Header.Get("Content-type")
 				if contentType == "" {
-					ctx.AbortWithStatus(http.StatusSeeOther)
+					contentType = "application/json"
+				}
+
+				authToken := ctx.Request.Header.Get("Authorization")
+				if t == "" {
+					ctx.AbortWithStatusJSON(http.StatusUnauthorized, err)
 					return
 				}
-				ctx.AbortWithStatusJSON(http.StatusUnauthorized, err)
+
+				authTokenArr := strings.Fields(authToken)
+				if len(authTokenArr) != 2 || authTokenArr[0] != "Bearer" {
+					ctx.AbortWithStatus(http.StatusUnauthorized)
+					return
+				}
+
+				t = authTokenArr[1]
+
+			} else {
+				ctx.AbortWithStatus(http.StatusBadRequest)
 				return
 			}
-			ctx.AbortWithStatus(http.StatusBadRequest)
-			return
 		}
 
 		claims := &model.Claims{}
 
-		token, err := jwt.ParseWithClaims(c, claims, func(t *jwt.Token) (interface{}, error) {
+		token, err := jwt.ParseWithClaims(t, claims, func(t *jwt.Token) (interface{}, error) {
 			return model.JwtKey, nil
 		})
 		// ctx.Set("email", claims.Email)
